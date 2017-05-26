@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*- 
+import  xdrlib ,sys
+import xlrd
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+class ReadData:
+    
+    def _open_excel(self,filename):
+        try:
+            data = xlrd.open_workbook(filename)
+            return data
+        except Exception,e:
+            print str(e)
+    #根据索引获取Excel表格中的数据   参数:file：Excel文件路径     colnameindex：表头列名所在行的所以  ，by_index：表的索引
+
+    def Read_By_SheetId(self,filename,index=0,row=0,col=0):
+        try:
+            i=int(index)
+            c=int(col)
+            r=int(row)
+            data=self._open_excel(filename)
+            table = data.sheet_by_index(i)
+            cell=table.cell(r,c).value
+            return cell
+        except Exception,e:
+            print str(e)
+
+    def Read_By_SheetName(self,filename,sname='Sheet1',row=0,col=0):
+        try:
+            c=int(col)
+            r=int(row)
+            data=self._open_excel(filename)
+            table = data.sheet_by_name(sname)
+            cell=table.cell(r,c).value
+            return cell
+        except Exception,e:
+            print str(e)
+
+    def Excel_Table_Byrow(self,filename,rowindex=0,by_index=0):    
+        r=int(rowindex)
+        i=int(by_index)
+        data = self._open_excel(filename)
+        table = data.sheets()[i]
+        nrows = table.nrows #行数
+        ncols = table.ncols #列数
+        rowdata =  table.row_values(r) #某一行数据
+        return rowdata
+
+    def Excel_Table_Bycol(self,filename,colindex=0,by_index=0):
+        c=int(colindex)
+        i=int(by_index)
+        data = self._open_excel(filename)
+        table = data.sheets()[i]
+        nrows = table.nrows #行数
+        ncols = table.ncols #列数
+        coldata =  table.col_values(c) #某一列数据
+        return coldata
+
+    
